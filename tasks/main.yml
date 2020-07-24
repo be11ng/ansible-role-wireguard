@@ -4,6 +4,13 @@
 
 - include_tasks: "setup-{{ ansible_distribution|lower }}.yml"
 
+- name: Allow WireGuard through ufw
+  ufw: rule=allow port={{ wireguard_port }}
+  tags: ufw
+
+- name: Enable IPv4 traffic forwarding
+  sysctl: name=net.ipv4.ip_forward value=1
+
 - name: Enable WireGuard kernel module
   modprobe:
     name: wireguard
